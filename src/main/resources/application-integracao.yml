@@ -1,0 +1,18 @@
+# Perfil dos testes de integração com Testcontainers: banco, Kafka e Redis vêm dos containers; o resto é produção.
+spring:
+  kafka:
+    consumer:
+      properties:
+        isolation.level: read_uncommitted
+
+management:
+  tracing:
+    enabled: false
+
+bilheteria:
+  pagamentos:
+    url: http://localhost:${local.server.port}/simulador/pagamentos
+  outbox:
+    intervalo: 200
+  expiracao:
+    intervalo: 3600000
