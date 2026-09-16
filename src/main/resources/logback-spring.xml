@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <!-- Em produção (containers) os logs saem em JSON, um evento por linha, com traceId e spanId para correlacionar
+       com o Jaeger. Nos testes e no desenvolvimento, texto legível. -->
+  <springProfile name="!test &amp; !dev">
+    <appender name="JSON" class="ch.qos.logback.core.ConsoleAppender">
+      <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+        <customFields>{"servico":"bilheteria"}</customFields>
+        <includeMdcKeyName>traceId</includeMdcKeyName>
+        <includeMdcKeyName>spanId</includeMdcKeyName>
+      </encoder>
+    </appender>
+    <root level="INFO">
+      <appender-ref ref="JSON"/>
+    </root>
+  </springProfile>
+
+  <springProfile name="test | dev">
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+    <root level="INFO">
+      <appender-ref ref="CONSOLE"/>
+    </root>
+    <logger name="org.apache.kafka" level="WARN"/>
+    <logger name="kafka" level="WARN"/>
+    <logger name="state.change.logger" level="WARN"/>
+    <logger name="org.springframework.kafka" level="WARN"/>
+  </springProfile>
+
+  <logger name="org.apache.kafka" level="WARN"/>
+  <logger name="org.hibernate.SQL" level="WARN"/>
+</configuration>
