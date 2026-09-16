@@ -28,7 +28,7 @@ jobs:
           path: target/surefire-reports
 
   integracao:
-    name: Testes de integração (Testcontainers: PostgreSQL, Kafka, Redis)
+    name: "Testes de integração com Testcontainers (PostgreSQL, Kafka, Redis)"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
