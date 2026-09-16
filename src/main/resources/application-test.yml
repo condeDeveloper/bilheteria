@@ -1,0 +1,32 @@
+# Perfil dos testes rápidos: H2 em modo PostgreSQL, Kafka embutido, cache e lock em memória, sem Redis nem tracing.
+spring:
+  datasource:
+    url: jdbc:h2:mem:bilheteria;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH;LOCK_TIMEOUT=10000
+    username: sa
+    password:
+  kafka:
+    bootstrap-servers: ${spring.embedded.kafka.brokers}
+    consumer:
+      properties:
+        isolation.level: read_uncommitted
+  cache:
+    type: simple
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
+      - org.springframework.boot.autoconfigure.data.redis.RedisRepositoriesAutoConfiguration
+
+management:
+  health:
+    redis:
+      enabled: false
+  tracing:
+    enabled: false
+
+bilheteria:
+  pagamentos:
+    url: http://localhost:${local.server.port}/simulador/pagamentos
+  outbox:
+    intervalo: 200
+  expiracao:
+    intervalo: 3600000
