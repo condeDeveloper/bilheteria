@@ -1,0 +1,9 @@
+target/
+.mvn/wrapper/*.jar
+.git/
+.github/
+infra/
+docker-compose*.yml
+README.md
+*.log
+.env
